@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<title>Index</title>
+<%
+var url = require('url').parse(request.url, true);
+var num = num = parseInt(url.query.num) || 10;
+for(var i=0;i<num;i++){
+%>
+<button><%=i%></button>
+<%}%>

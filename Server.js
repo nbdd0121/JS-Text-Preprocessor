@@ -140,12 +140,16 @@ function runScript(request, response, script) {
     Async: Async.Async,
     close: function(error) {
       if (error) {
-        response.end('ERROR: ' + e);
+        response.end('ERROR: ' + error);
       } else {
         response.end();
       }
     }
   };
   vm.createContext(sandbox);
-  vm.runInContext(script, sandbox);
+  try {
+    vm.runInContext(script, sandbox);
+  } catch (e) {
+    sandbox.close(e);
+  }
 }
