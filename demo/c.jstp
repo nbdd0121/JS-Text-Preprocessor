@@ -1,0 +1,6 @@
+#include <stdio.h>
+
+int main(void) {<% for(var i=0;i<10;i++){ %>
+	printf("<%=i%>\n");<%}%>
+	return 0;
+}
