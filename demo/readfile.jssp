@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<title>FileReader</title>
+<%
+var url = require('url').parse(request.url, true);
+var file = url.query.filename;
+if(!file){
+	return;
+}
+
+var fs = require('fs');
+function readFile(file){
+	return new Promise(function(resolve, reject){
+		fs.readFile(file, function(error, data){
+			if(error) reject(error);
+			else resolve(data);
+		});
+	});
+}
+
+var data = yield readFile(file);
+%>
+<pre><%=data%></pre>
