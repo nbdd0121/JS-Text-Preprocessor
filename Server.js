@@ -93,7 +93,7 @@ dataCache.onEntryRemoved = dataCache.onEntryRemoved = function(name) {
 }
 
 http.createServer(function(request, response) {
-  var filePath = '.' + url.parse(request.url).pathname;
+  var filePath = config.webroot + url.parse(request.url).pathname;
   console.log('requesting ' + filePath);
 
   pathCache.get(filePath, function(error, resolved) {
@@ -136,7 +136,17 @@ function runScript(request, response, script) {
     },
     request: request,
     response: response,
-    require: require,
+    require: function(name) {
+      try {
+        return require(name);
+      } catch (e) {}
+      for (var item of config.requirePath) {
+        try {
+          return require(config.requirePath + name);
+        } catch (e) {}
+      }
+      throw new Error("Cannot find module '" + name + "'");
+    },
     Async: Async.Async,
     close: function(error) {
       if (error) {
